@@ -6,72 +6,39 @@ function funcCarousel() {
         "type": "carousel",
         "columns": [
             {
-                "thumbnailImageUrl": "https://i.ibb.co/6tTfWY4/progessive-02.png",
+                "thumbnailImageUrl": "https://cdn-icons-png.flaticon.com/512/5133/5133504.png",
                 "imageBackgroundColor": "#FFFFFF",
-                "title": "Muscle relaxation",
-                "text": "มาผ่อนคลายกล้ามเนื้อกันด้วย Progressive Muscle Relaxation",
+                "title": "Air factory",
+                "text": "Air factory report",
                 "defaultAction": {
                     "type": "uri",
                     "label": "View detail",
-                    "uri": "https://i.ibb.co/6tTfWY4/progessive-02.png"
+                    "uri": "https://cdn-icons-png.flaticon.com/512/5133/5133504.png"
                 },
                 "actions": [
                     {
                         "type": "message",
                         "label": "ดำเนินการ",
-                        "text": "ดำเนินการ Muscle relaxation"
+                        "text": "SCG Air Factory"
                     },
-                    {
-                        "type": "message",
-                        "label": "รายละเอียด",
-                        "text": "รายละเอียด Muscle relaxation"
-                    }
                 ]
             },
             {
-                "thumbnailImageUrl": "https://i.ibb.co/mXvMMTz/deep-deep.png",
+                "thumbnailImageUrl": "https://cdn-icons-png.flaticon.com/512/234/234784.png",
                 "imageBackgroundColor": "#000000",
-                "title": "Deep-slow breathing",
-                "text": "การหายใจเข้าออกลึก ๆ จะทำให้เราหลับสบายขึ้น",
+                "title": "Solar Roof",
+                "text": "Solar report",
                 "defaultAction": {
                     "type": "uri",
                     "label": "View detail",
-                    "uri": "https://i.ibb.co/mXvMMTz/deep-deep.png"
+                    "uri": "https://cdn-icons-png.flaticon.com/512/234/234784.png"
                 },
                 "actions": [
                     {
                         "type": "message",
                         "label": "ดำเนินการ",
-                        "text": "ดำเนินการ Deep slow breathing"
+                        "text": "SCG Solar Roof"
                     },
-                    {
-                        "type": "message",
-                        "label": "รายละเอียด",
-                        "text": "รายละเอียด Deep slow breathing"
-                    }
-                ]
-            },
-            {
-                "thumbnailImageUrl": "https://i.ibb.co/sH3VbFB/chatbot-chatbot.png",
-                "imageBackgroundColor": "#000000",
-                "title": "Talk with Chat bot",
-                "text": "นึกถึงเรื่องราวที่เกิดขึ้นระหว่างวันทบทวนสิ่งที่เกิดขึ้น",
-                "defaultAction": {
-                    "type": "uri",
-                    "label": "View detail",
-                    "uri": "https://i.ibb.co/sH3VbFB/chatbot-chatbot.png"
-                },
-                "actions": [
-                    {
-                        "type": "message",
-                        "label": "เริ่มต้นพูดคุย",
-                        "text": "สวัสดี mysleepless savoring"
-                    },
-                    {
-                        "type": "message",
-                        "label": "รายละเอียด",
-                        "text": "รายละเอียด Savoring"
-                    }
                 ]
             },
         ],

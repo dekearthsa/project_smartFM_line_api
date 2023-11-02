@@ -2,6 +2,8 @@
 const line = require("@line/bot-sdk");
 const {Datastore} = require('@google-cloud/datastore');
 const {funcCarousel} = require("../struct/airfac_solar");
+const {funcCarouselAirfac} = require("../struct/airfac");
+const {funcCarouselSolar} = require("../struct/solar");
 
 const CHANNEL_SECRET ="a123dfdce669ad6868727b47f64415ad";
 const CHANNEL_ACCESS_TOKEN ="lqHG6mhwJDMus7YLEZbXXRcQsBMSr3gaJCSwIKVBJgc/5jfCit8goM8Gu0RDCzIYsicBN1BdL+RqBkhFsDSQ+e8zwo6UTn2T35zIBwcAVT5tgu9rnu4QeTjnMCpFibp9D8aU8KR19JM0IVX9Nf9NfAdB04t89/1O/w1cDnyilFU=";
@@ -32,9 +34,18 @@ const controllerLineAPI = async (req:any , res:any) => {
                 .filter("lineUserId", "=", "demo")
                 const [userProfile] = await datastore.runQuery(structQuery);
                 if(userProfile.length !== 0){
-                    console.log("not empty!")
-                    const echo = {type: 'template', altText: 'demo', template: funcCarousel()}
-                    return LINE_CLIENT.replyMessage(REPLY_TOKEN, echo);
+
+                    if(userProfile[0].userProfile.includes('air_factory') && userProfile[0].userProfile.includes('solar_roof')){
+                        const echo = {type: 'template', altText: 'demo', template: funcCarousel()}
+                        return LINE_CLIENT.replyMessage(REPLY_TOKEN, echo);
+                    }else if(userProfile[0].userProfile.includes('air_factory')){
+                        const echo = {type: 'template', altText: 'demo', template: funcCarouselAirfac()}
+                        return LINE_CLIENT.replyMessage(REPLY_TOKEN, echo);
+                    }else if(userProfile[0].userProfile.includes('solar_roof')){
+                        const echo = {type: 'template', altText: 'demo', template: funcCarouselSolar()}
+                        return LINE_CLIENT.replyMessage(REPLY_TOKEN, echo);
+                    }
+                    
                 }else{
                     const replyPayload = {type: "text", text: "คุณยังไม่ได้ลงทะเบียน รบกวนลงทะเบียนก่อนตามเมนูด้านล่าง"}
                     return LINE_CLIENT.replyMessage(REPLY_TOKEN, replyPayload)

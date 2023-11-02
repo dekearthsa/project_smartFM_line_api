@@ -1,4 +1,4 @@
-function funcCarousel() {
+function funcCarouselAirfac() {
     return {
         "type": "carousel",
         "columns": [
@@ -20,28 +20,10 @@ function funcCarousel() {
                     },
                 ]
             },
-            {
-                "thumbnailImageUrl": "https://cdn-icons-png.flaticon.com/512/234/234784.png",
-                "imageBackgroundColor": "#000000",
-                "title": "Solar Roof",
-                "text": "Solar report",
-                "defaultAction": {
-                    "type": "uri",
-                    "label": "View detail",
-                    "uri": "https://cdn-icons-png.flaticon.com/512/234/234784.png"
-                },
-                "actions": [
-                    {
-                        "type": "message",
-                        "label": "ดำเนินการ",
-                        "text": "SCG Solar Roof"
-                    },
-                ]
-            },
         ],
         "imageAspectRatio": "rectangle",
         "imageSize": "cover"
     }
 }
 
-export { funcCarousel }; 
+export { funcCarouselAirfac }; 
