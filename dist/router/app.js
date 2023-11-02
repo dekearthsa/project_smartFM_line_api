@@ -1,0 +1,16 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.app = void 0;
+const express = require("express");
+const cors = require("cors");
+const { controllerDebug } = require("../controller/controllerDebug");
+const { controllerCreateProfile } = require("../controller/controllerCreateProfile");
+const { controllerLineAPI } = require("../controller/controllerLineAPI");
+const app = express();
+exports.app = app;
+app.use(express.urlencoded({ extends: true }));
+app.use(express.json());
+app.use(cors({ origin: '*' }));
+app.get("/api/debug", controllerDebug);
+app.post("/api/debug/createprofile", controllerCreateProfile);
+app.post("/api/line", controllerLineAPI);
