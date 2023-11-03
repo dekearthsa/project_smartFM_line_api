@@ -19,7 +19,7 @@ function funcCarouselAirfac() {
                     {
                         "type": "message",
                         "label": "ดำเนินการ",
-                        "text": "SCG Air Factory"
+                        "text": "Report SCG Air Factory"
                     },
                 ]
             },

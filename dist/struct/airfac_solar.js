@@ -19,7 +19,7 @@ function funcCarousel() {
                     {
                         "type": "message",
                         "label": "ดำเนินการ",
-                        "text": "SCG Air Factory"
+                        "text": "Report SCG Air Factory"
                     },
                 ]
             },
@@ -37,7 +37,7 @@ function funcCarousel() {
                     {
                         "type": "message",
                         "label": "ดำเนินการ",
-                        "text": "SCG Solar Roof"
+                        "text": "Report SCG Solar Roof"
                     },
                 ]
             },

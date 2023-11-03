@@ -19,7 +19,7 @@ function funcCarouselSolar() {
                     {
                         "type": "message",
                         "label": "ดำเนินการ",
-                        "text": "SCG Solar Roof"
+                        "text": "Report SCG Solar Roof"
                     },
                 ]
             },
