@@ -1,4 +1,4 @@
-const flexDemoReply = (lineId: string) => {
+const flexRegister = (lineId: string) => {
     // console.log()
     return {
         "type": "bubble",
@@ -20,12 +20,6 @@ const flexDemoReply = (lineId: string) => {
                     "align": "center",
                     "contents": []
                 },
-                // {
-                //     "type": "text",
-                //     "text": `msg => ${lineId}`,
-                //     "align": "center",
-                //     "contents": []
-                // },
             ]
         },
         "footer": {
@@ -46,4 +40,4 @@ const flexDemoReply = (lineId: string) => {
         }
     }
 }
-export { flexDemoReply }
+export { flexRegister }

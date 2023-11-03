@@ -1,7 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.flexDemoReply = void 0;
-const flexDemoReply = (lineId) => {
+exports.flexRegister = void 0;
+const flexRegister = (lineId) => {
     // console.log()
     return {
         "type": "bubble",
@@ -23,12 +23,6 @@ const flexDemoReply = (lineId) => {
                     "align": "center",
                     "contents": []
                 },
-                // {
-                //     "type": "text",
-                //     "text": `msg => ${lineId}`,
-                //     "align": "center",
-                //     "contents": []
-                // },
             ]
         },
         "footer": {
@@ -49,4 +43,4 @@ const flexDemoReply = (lineId) => {
         }
     };
 };
-exports.flexDemoReply = flexDemoReply;
+exports.flexRegister = flexRegister;
