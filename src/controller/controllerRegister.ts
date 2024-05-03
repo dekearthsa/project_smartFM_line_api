@@ -1,29 +1,54 @@
 // const { Storage } =  require('@google-cloud/storage');
-const {Datastore} = require('@google-cloud/datastore');
+// const {Datastore} = require('@google-cloud/datastore');
 
+import {DynamoDBDocumentClient ,PutCommand } from  "@aws-sdk/lib-dynamodb";
+import {DynamoDBClient } from  "@aws-sdk/client-dynamodb";
 
-const datastore = new Datastore();
+// const datastore = new Datastore();
 const KIND_COLLECTION = "demo_user_line_id"
+const client = new DynamoDBClient({});
+const docClient = DynamoDBDocumentClient.from(client);
 
 const controllerRegisterLine = async (req:any, res:any) => {
-    const {email, fristName, lastName, tel, userID,getMilisec, product,lineUserId, plantName,  } = req.body;
+    const {email, fristName, lastName, tel, userID, getMilisec, product,lineUserID, plantName  } = req.body;
     try{
-        const taskKey = datastore.key([KIND_COLLECTION]);
-        const task = {
-            key: taskKey,
-            data: {
+
+        const date = new Date();
+        const ms = date.getTime();
+
+        // const taskKey = datastore.key([KIND_COLLECTION]);
+        // const task = {
+        //     key: taskKey,
+        //     data: {
+        //         Email: email,
+        //         FristName: fristName,
+        //         LastName: lastName,
+        //         Tel: tel,
+        //         UserID: userID,
+        //         createDate: getMilisec,
+        //         isProduct:product,
+        //         lineUserId: lineUserId,
+        //         plantName: plantName,
+        //     }
+        // }
+        // await datastore.save(task);
+
+        const command = new PutCommand({
+            TableName: KIND_COLLECTION,
+            Item: {
                 Email: email,
                 FristName: fristName,
                 LastName: lastName,
                 Tel: tel,
                 UserID: userID,
-                createDate: getMilisec,
-                isProduct:product,
-                lineUserId: lineUserId,
-                plantName: plantName,
-            }
-        }
-        await datastore.save(task);
+                CreateDate: getMilisec?getMilisec:ms,
+                IsProduct:product,
+                LineUserId: lineUserID,
+                PlantName: plantName,
+            },
+        });
+
+        await docClient.send(command);
         const payloadReply = {
             isSave:true,
             desc: "Create new user plant success!"

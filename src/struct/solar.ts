@@ -1,4 +1,4 @@
-function funcCarouselSolar() {
+export default function funcCarouselSolar() {
     return {
         "type": "carousel",
         "columns": [
@@ -26,4 +26,4 @@ function funcCarouselSolar() {
     }
 }
 
-export { funcCarouselSolar }; 
+// export { funcCarouselSolar }; 

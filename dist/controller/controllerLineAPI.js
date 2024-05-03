@@ -8,26 +8,31 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.controllerLineAPI = void 0;
-const line = require("@line/bot-sdk");
-const { Datastore } = require('@google-cloud/datastore');
-const { funcCarousel } = require("../struct/airfac_solar");
-const { funcCarouselAirfac } = require("../struct/airfac");
-const { funcCarouselSolar } = require("../struct/solar");
-const { flexRegister } = require("../struct/flexRegisster");
-const { flexAirFactory } = require("../struct/flexAirFactory");
-const { flexSolarRoof } = require("../struct/flexSolarRoof");
+const bot_sdk_1 = __importDefault(require("@line/bot-sdk"));
+const lib_dynamodb_1 = require("@aws-sdk/lib-dynamodb");
+const client_dynamodb_1 = require("@aws-sdk/client-dynamodb");
+const airfac_solar_1 = __importDefault(require("../struct/airfac_solar"));
+const airfac_1 = __importDefault(require("../struct/airfac"));
+const solar_1 = __importDefault(require("../struct/solar"));
+const flexRegisster_1 = __importDefault(require("../struct/flexRegisster"));
+const flexAirFactory_1 = __importDefault(require("../struct/flexAirFactory"));
+const flexSolarRoof_1 = __importDefault(require("../struct/flexSolarRoof"));
 const CHANNEL_SECRET = "a123dfdce669ad6868727b47f64415ad";
 const CHANNEL_ACCESS_TOKEN = "lqHG6mhwJDMus7YLEZbXXRcQsBMSr3gaJCSwIKVBJgc/5jfCit8goM8Gu0RDCzIYsicBN1BdL+RqBkhFsDSQ+e8zwo6UTn2T35zIBwcAVT5tgu9rnu4QeTjnMCpFibp9D8aU8KR19JM0IVX9Nf9NfAdB04t89/1O/w1cDnyilFU=";
 const KIND_COLLECTION = "demo_user_line_id";
 const KIND_REPORT = "demo_user_line_report";
+const client = new client_dynamodb_1.DynamoDBClient({});
+const docClient = lib_dynamodb_1.DynamoDBDocumentClient.from(client);
 const CONFIG = {
     channelAccessToken: CHANNEL_ACCESS_TOKEN,
     channelSecret: CHANNEL_SECRET
 };
-const datastore = new Datastore();
-const LINE_CLIENT = new line.Client(CONFIG);
+const LINE_CLIENT = new bot_sdk_1.default.Client(CONFIG);
 const controllerLineAPI = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const body = req.body;
     const MSG_TYPE = body.events[0].message.type;
@@ -41,21 +46,26 @@ const controllerLineAPI = (req, res) => __awaiter(void 0, void 0, void 0, functi
     if (MSG_TYPE === "text") {
         if (MSG_IN === "Repair request") {
             try {
-                const structQuery = datastore.createQuery(KIND_COLLECTION)
-                    .filter("lineUserId", "=", USER_ID);
-                const [userProfile] = yield datastore.runQuery(structQuery);
-                // console.log(userProfile)
-                if (userProfile.length !== 0) {
-                    if (userProfile[0].isProduct.includes('air_factory') && userProfile[0].isProduct.includes('solar_roof')) {
-                        const echo = { type: 'template', altText: 'demo', template: funcCarousel() };
+                const command = new client_dynamodb_1.ScanCommand({
+                    TableName: KIND_COLLECTION,
+                    FilterExpression: "#username = :u",
+                    ExpressionAttributeNames: { '#username': 'username' },
+                    ExpressionAttributeValues: {
+                        ':u': { S: 'earth' },
+                    },
+                });
+                const userProfile = yield docClient.send(command);
+                if (userProfile.Items.length !== 0) {
+                    if (userProfile.Items.isProduct.includes('air_factory') && userProfile.Items.isProduct.includes('solar_roof')) {
+                        const echo = { type: 'template', altText: 'demo', template: (0, airfac_solar_1.default)() };
                         return LINE_CLIENT.replyMessage(REPLY_TOKEN, echo);
                     }
-                    else if (userProfile[0].isProduct.includes('air_factory')) {
-                        const echo = { type: 'template', altText: 'demo', template: funcCarouselAirfac() };
+                    else if (userProfile.Items.isProduct.includes('air_factory')) {
+                        const echo = { type: 'template', altText: 'demo', template: (0, airfac_1.default)() };
                         return LINE_CLIENT.replyMessage(REPLY_TOKEN, echo);
                     }
-                    else if (userProfile[0].isProduct.includes('solar_roof')) {
-                        const echo = { type: 'template', altText: 'demo', template: funcCarouselSolar() };
+                    else if (userProfile.Items.isProduct.includes('solar_roof')) {
+                        const echo = { type: 'template', altText: 'demo', template: (0, solar_1.default)() };
                         return LINE_CLIENT.replyMessage(REPLY_TOKEN, echo);
                     }
                 }
@@ -67,12 +77,12 @@ const controllerLineAPI = (req, res) => __awaiter(void 0, void 0, void 0, functi
             catch (err) {
                 // res.send(err)
                 console.log("err => ", err);
-                const replyPayload = { type: "text", text: "Internal error 500!" };
+                const replyPayload = { type: "text", text: JSON.stringify(err) };
                 return LINE_CLIENT.replyMessage(REPLY_TOKEN, replyPayload);
             }
         }
         else if (MSG_IN === "สมัครใช้งาน") {
-            const payloadFlex = flexRegister(USER_ID);
+            const payloadFlex = (0, flexRegisster_1.default)(USER_ID);
             const echo = { type: 'flex', altText: 'register', contents: payloadFlex };
             return LINE_CLIENT.replyMessage(REPLY_TOKEN, echo);
         }
@@ -82,11 +92,17 @@ const controllerLineAPI = (req, res) => __awaiter(void 0, void 0, void 0, functi
         }
         else if (MSG_IN === "Report SCG Air Factory") {
             try {
-                const structQuery = datastore.createQuery(KIND_COLLECTION)
-                    .filter("lineUserId", "=", USER_ID);
-                const [userProfile] = yield datastore.runQuery(structQuery);
-                if (userProfile.length !== 0) {
-                    const payloadFlex = flexAirFactory(USER_ID);
+                const command = new client_dynamodb_1.ScanCommand({
+                    TableName: 'test',
+                    FilterExpression: "#username = :u",
+                    ExpressionAttributeNames: { '#username': 'username' },
+                    ExpressionAttributeValues: {
+                        ':u': { S: 'earth' },
+                    },
+                });
+                const userProfile = yield docClient.send(command);
+                if (userProfile.Item.length !== 0) {
+                    const payloadFlex = (0, flexAirFactory_1.default)(USER_ID);
                     const echo = { type: 'flex', altText: "report", contents: payloadFlex };
                     return LINE_CLIENT.replyMessage(REPLY_TOKEN, echo);
                 }
@@ -97,17 +113,23 @@ const controllerLineAPI = (req, res) => __awaiter(void 0, void 0, void 0, functi
             }
             catch (err) {
                 console.log("err => ", err);
-                const echo = { type: "text", text: err };
+                const echo = { type: "text", text: JSON.stringify(err) };
                 return LINE_CLIENT.replyMessage(REPLY_TOKEN, echo);
             }
         }
         else if (MSG_IN === "Report SCG Solar Roof") {
             try {
-                const structQuery = datastore.createQuery(KIND_COLLECTION)
-                    .filter("lineUserId", "=", USER_ID);
-                const [userProfile] = yield datastore.runQuery(structQuery);
-                if (userProfile.length !== 0) {
-                    const payloadFlex = flexSolarRoof(USER_ID);
+                const command = new client_dynamodb_1.ScanCommand({
+                    TableName: 'test',
+                    FilterExpression: "#username = :u",
+                    ExpressionAttributeNames: { '#username': 'username' },
+                    ExpressionAttributeValues: {
+                        ':u': { S: 'earth' },
+                    },
+                });
+                const userProfile = yield docClient.send(command);
+                if (userProfile.Item.length !== 0) {
+                    const payloadFlex = (0, flexSolarRoof_1.default)(USER_ID);
                     const echo = { type: 'flex', altText: "report", contents: payloadFlex };
                     return LINE_CLIENT.replyMessage(REPLY_TOKEN, echo);
                 }
@@ -124,145 +146,139 @@ const controllerLineAPI = (req, res) => __awaiter(void 0, void 0, void 0, functi
         }
         else if (MSG_IN === "1. air fac filter ตัน") {
             try {
-                const taskKey = datastore.key([KIND_REPORT]);
-                const task = {
-                    key: taskKey,
-                    data: {
+                const command = new lib_dynamodb_1.PutCommand({
+                    TableName: KIND_REPORT,
+                    Item: {
                         CreateDate: ms,
                         CustomerLineID: USER_ID,
                         SystemName: "air_factroy",
                         ProblemType: "1. filter ตัน",
-                        comment: "filter ตัน",
-                        closeCase: false
-                    }
-                };
-                yield datastore.save(task);
+                        Comment: "filter ตัน",
+                        CloseCase: false
+                    },
+                });
+                yield docClient.send(command);
                 const echo = { type: "text", text: "แจ้งปัญหา filter ตันเรียบร้อยแล้วค่ะ" };
                 return LINE_CLIENT.replyMessage(REPLY_TOKEN, echo);
             }
             catch (err) {
                 console.log("err => ", err);
-                const echo = { type: "text", text: err };
+                const echo = { type: "text", text: JSON.stringify(err) };
                 return LINE_CLIENT.replyMessage(REPLY_TOKEN, echo);
             }
         }
         else if (MSG_IN === "2. air fac ระบบเปิดไม่ติด") {
             try {
-                const taskKey = datastore.key([KIND_REPORT]);
-                const task = {
-                    key: taskKey,
-                    data: {
+                const command = new lib_dynamodb_1.PutCommand({
+                    TableName: KIND_REPORT,
+                    Item: {
                         CreateDate: ms,
                         CustomerLineID: USER_ID,
                         SystemName: "air_factroy",
-                        ProblemType: "2. ระบบเปิดไม่ติด",
-                        comment: "ระบบเปิดไม่ติด",
-                        closeCase: false
-                    }
-                };
-                yield datastore.save(task);
+                        ProblemType: "2. air fac ระบบเปิดไม่ติด",
+                        Comment: "air fac ระบบเปิดไม่ติด",
+                        CloseCase: false
+                    },
+                });
+                yield docClient.send(command);
                 const echo = { type: "text", text: "แจ้งปัญหาระบบเปิดไม่ติดเรียบร้อยแล้วค่ะ" };
                 return LINE_CLIENT.replyMessage(REPLY_TOKEN, echo);
             }
             catch (err) {
                 console.log("err => ", err);
-                const echo = { type: "text", text: err };
+                const echo = { type: "text", text: JSON.stringify(err) };
                 return LINE_CLIENT.replyMessage(REPLY_TOKEN, echo);
             }
         }
         else if (MSG_IN === "3. air fac ระบบมีปัญหา") {
             try {
-                const taskKey = datastore.key([KIND_REPORT]);
-                const task = {
-                    key: taskKey,
-                    data: {
+                const command = new lib_dynamodb_1.PutCommand({
+                    TableName: KIND_REPORT,
+                    Item: {
                         CreateDate: ms,
                         CustomerLineID: USER_ID,
                         SystemName: "air_factroy",
-                        ProblemType: "3. ระบบมีปัญหา",
-                        comment: "ระบบมีปัญหา",
-                        closeCase: false
-                    }
-                };
-                yield datastore.save(task);
+                        ProblemType: "3. air fac ระบบมีปัญหา",
+                        Comment: "air fac ระบบมีปัญหา",
+                        CloseCase: false
+                    },
+                });
+                yield docClient.send(command);
                 const echo = { type: "text", text: "แจ้งปัญหาระบบมีปัญหาเรียบร้อยแล้วค่ะ" };
                 return LINE_CLIENT.replyMessage(REPLY_TOKEN, echo);
             }
             catch (err) {
                 console.log("err => ", err);
-                const echo = { type: "text", text: err };
+                const echo = { type: "text", text: JSON.stringify(err) };
                 return LINE_CLIENT.replyMessage(REPLY_TOKEN, echo);
             }
         }
         else if (MSG_IN === "1. solar แจ้งทำความสะอาด") {
             try {
-                const taskKey = datastore.key([KIND_REPORT]);
-                const task = {
-                    key: taskKey,
-                    data: {
+                const command = new lib_dynamodb_1.PutCommand({
+                    TableName: KIND_REPORT,
+                    Item: {
                         CreateDate: ms,
                         CustomerLineID: USER_ID,
-                        SystemName: "solar_roof",
-                        ProblemType: "1. แจ้งทำความสะอาด",
-                        comment: "แจ้งทำความสะอาด",
-                        closeCase: false
-                    }
-                };
-                yield datastore.save(task);
+                        SystemName: "air_factroy",
+                        ProblemType: "1. solar แจ้งทำความสะอาด",
+                        Comment: "solar แจ้งทำความสะอาด",
+                        CloseCase: false
+                    },
+                });
+                yield docClient.send(command);
                 const echo = { type: "text", text: "แจ้งทำความสะอาด Solar เรียบร้อยแล้วค่ะ" };
                 return LINE_CLIENT.replyMessage(REPLY_TOKEN, echo);
             }
             catch (err) {
                 console.log("err => ", err);
-                const echo = { type: "text", text: err };
+                const echo = { type: "text", text: JSON.stringify(err) };
                 return LINE_CLIENT.replyMessage(REPLY_TOKEN, echo);
             }
         }
         else if (MSG_IN === "2. solar ระบบช็อต") {
             try {
-                const taskKey = datastore.key([KIND_REPORT]);
-                const task = {
-                    key: taskKey,
-                    data: {
+                const command = new lib_dynamodb_1.PutCommand({
+                    TableName: KIND_REPORT,
+                    Item: {
                         CreateDate: ms,
                         CustomerLineID: USER_ID,
                         SystemName: "solar_roof",
                         ProblemType: "2. solar ระบบช็อต",
-                        comment: "solar ระบบช็อต",
-                        closeCase: false
-                    }
-                };
-                yield datastore.save(task);
+                        Comment: "solar ระบบช็อต",
+                        CloseCase: false
+                    },
+                });
+                yield docClient.send(command);
                 const echo = { type: "text", text: "แจ้งปัญหา solar ระบบช็อตเรียบร้อยแล้วค่ะ" };
                 return LINE_CLIENT.replyMessage(REPLY_TOKEN, echo);
             }
             catch (err) {
                 console.log("err => ", err);
-                const echo = { type: "text", text: err };
+                const echo = { type: "text", text: JSON.stringify(err) };
                 return LINE_CLIENT.replyMessage(REPLY_TOKEN, echo);
             }
         }
         else if (MSG_IN === "3. solar ระบบมีปัญหา") {
             try {
-                const taskKey = datastore.key([KIND_REPORT]);
-                const task = {
-                    key: taskKey,
-                    data: {
+                const command = new lib_dynamodb_1.PutCommand({
+                    TableName: KIND_REPORT,
+                    Item: {
                         CreateDate: ms,
                         CustomerLineID: USER_ID,
                         SystemName: "solar_roof",
                         ProblemType: "3. solar ระบบมีปัญหา",
-                        comment: "solar ระบบมีปัญหา",
-                        closeCase: false
-                    }
-                };
-                yield datastore.save(task);
+                        Comment: "solar ระบบมีปัญหา",
+                        CloseCase: false
+                    },
+                });
+                yield docClient.send(command);
                 const echo = { type: "text", text: "แจ้ง solar ระบบมีปัญหาเรียบร้อยแล้วค่ะ" };
                 return LINE_CLIENT.replyMessage(REPLY_TOKEN, echo);
             }
             catch (err) {
                 console.log("err => ", err);
-                const echo = { type: "text", text: err };
+                const echo = { type: "text", text: JSON.stringify(err) };
                 return LINE_CLIENT.replyMessage(REPLY_TOKEN, echo);
             }
         }

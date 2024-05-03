@@ -1,4 +1,4 @@
-function funcCarouselAirfac() {
+export default function funcCarouselAirfac() {
     return {
         "type": "carousel",
         "columns": [
@@ -26,4 +26,4 @@ function funcCarouselAirfac() {
     }
 }
 
-export { funcCarouselAirfac }; 
+// export { funcCarouselAirfac }; 

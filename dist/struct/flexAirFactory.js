@@ -1,7 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.flexAirFactory = void 0;
-const flexAirFactory = (lineUserID) => {
+function flexAirFactory(lineUserID) {
     // console.log()
     return {
         "type": "bubble",
@@ -91,5 +90,6 @@ const flexAirFactory = (lineUserID) => {
             ]
         }
     };
-};
-exports.flexAirFactory = flexAirFactory;
+}
+exports.default = flexAirFactory;
+// export { flexAirFactory }

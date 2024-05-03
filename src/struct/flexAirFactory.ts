@@ -1,4 +1,4 @@
-const flexAirFactory = (lineUserID: string) => {
+export default function flexAirFactory (lineUserID: string) {
     // console.log()
     return {
         "type": "bubble",
@@ -89,4 +89,4 @@ const flexAirFactory = (lineUserID: string) => {
         }
     }
 }
-export { flexAirFactory }
+// export { flexAirFactory }

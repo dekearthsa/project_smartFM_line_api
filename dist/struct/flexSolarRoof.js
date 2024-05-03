@@ -1,7 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.flexSolarRoof = void 0;
-const flexSolarRoof = (lineUserID) => {
+function flexSolarRoof(lineUserID) {
     // console.log()
     return {
         "type": "bubble",
@@ -91,5 +90,6 @@ const flexSolarRoof = (lineUserID) => {
             ]
         }
     };
-};
-exports.flexSolarRoof = flexSolarRoof;
+}
+exports.default = flexSolarRoof;
+// export { flexSolarRoof }

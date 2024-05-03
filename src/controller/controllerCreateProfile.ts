@@ -1,6 +1,8 @@
-const {Datastore} = require('@google-cloud/datastore');
+import  { DynamoDBDocumentClient, PutCommand } from "@aws-sdk/lib-dynamodb"; 
+import { DynamoDBClient } from "@aws-sdk/client-dynamodb"
 
-const datastore = new Datastore();
+const client = new DynamoDBClient({});
+const docClient = DynamoDBDocumentClient.from(client);
 const KIND_COLLECTION = "demo_user_line_id"
 
 const controllerCreateProfile = async (req:any, res:any) => {
@@ -17,10 +19,27 @@ const controllerCreateProfile = async (req:any, res:any) => {
     const ms = date.getTime();
 
     try{
-        const taskKey = datastore.key([KIND_COLLECTION]);
-        const task = {
-            key: taskKey,
-            data:{
+        // const taskKey = datastore.key([KIND_COLLECTION]);
+        // const task = {
+        //     key: taskKey,
+        //     data:{
+        //         Email: email,
+        //         FristName: fristName,
+        //         LastName: lastName,
+        //         Tel: tel,
+        //         UserID: userID,
+        //         createDate: ms,
+        //         isProduct: isProduct,
+        //         lineUserId: lineUser,
+        //         plantName: plantName
+        //     }
+        // }
+
+        // await datastore.save(task)
+
+        const command = new PutCommand({
+            TableName: KIND_COLLECTION,
+            Item: {
                 Email: email,
                 FristName: fristName,
                 LastName: lastName,
@@ -30,10 +49,10 @@ const controllerCreateProfile = async (req:any, res:any) => {
                 isProduct: isProduct,
                 lineUserId: lineUser,
                 plantName: plantName
-            }
-        }
+            },
+        });
 
-        await datastore.save(task)
+        await docClient.send(command);
         const replyPayload = {
             isSave: true,
             desc: "Create success!"

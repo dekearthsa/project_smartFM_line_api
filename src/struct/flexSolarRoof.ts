@@ -1,4 +1,4 @@
-const flexSolarRoof = (lineUserID: string) => {
+export default function flexSolarRoof (lineUserID: string){
     // console.log()
     return {
         "type": "bubble",
@@ -89,4 +89,4 @@ const flexSolarRoof = (lineUserID: string) => {
         }
     }
 }
-export { flexSolarRoof }
+// export { flexSolarRoof }

@@ -1,8 +1,10 @@
-const {Datastore} = require('@google-cloud/datastore');
-
-const datastore = new Datastore();
+import {DynamoDBDocumentClient, PutCommand}  from "@aws-sdk/lib-dynamodb"; 
+import {DynamoDBClient, } from "@aws-sdk/client-dynamodb";
+// const datastore = new Datastore();
 // const KIND_COLLECTION = "demo_user_line_id"
 const KIND_REPORT = "demo_user_line_report"
+const client = new DynamoDBClient({});
+const docClient = DynamoDBDocumentClient.from(client);
 
 const controllerOtherReport = async (req:any, res:any) => {
     const {lineUserID, systemType ,report, typeReport} = req.body
@@ -10,19 +12,35 @@ const controllerOtherReport = async (req:any, res:any) => {
     const ms = date.getTime();
 
     try{
-        const taskKey = datastore.key([KIND_REPORT])
-        const task = {
-            key:taskKey,
-            data:{
+        const caseID = ms + lineUserID + typeReport
+        // const taskKey = datastore.key([KIND_REPORT])
+        // const task = {
+        //     key:taskKey,
+        //     data:{
+        //         CreateDate: ms,
+        //         CustomerLineID: lineUserID,
+        //         SystemName: systemType,
+        //         ProblemType: typeReport,
+        //         comment: report,
+        //         closeCase: false
+        //     }
+        // }
+
+        const command = new PutCommand({
+            TableName: KIND_REPORT,
+            Item: {
+                CaseID: caseID,
                 CreateDate: ms,
                 CustomerLineID: lineUserID,
                 SystemName: systemType,
                 ProblemType: typeReport,
-                comment: report,
-                closeCase: false
-            }
-        }
-        await datastore.save(task);
+                Comment: report,
+                CloseCase: false
+            },
+        });
+
+        await docClient.send(command);
+        // await datastore.save(task);
         const payloadReply = {
             isErr: false,
             desc: ""

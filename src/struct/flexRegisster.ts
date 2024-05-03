@@ -1,4 +1,4 @@
-const flexRegister = (lineId: string) => {
+export default function flexRegister(lineId: string) {
     // console.log()
     return {
         "type": "bubble",
@@ -40,4 +40,4 @@ const flexRegister = (lineId: string) => {
         }
     }
 }
-export { flexRegister }
+// export { flexRegister }

@@ -1,6 +1,5 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.funcCarouselSolar = void 0;
 function funcCarouselSolar() {
     return {
         "type": "carousel",
@@ -28,4 +27,5 @@ function funcCarouselSolar() {
         "imageSize": "cover"
     };
 }
-exports.funcCarouselSolar = funcCarouselSolar;
+exports.default = funcCarouselSolar;
+// export { funcCarouselSolar }; 

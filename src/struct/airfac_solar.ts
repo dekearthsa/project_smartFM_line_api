@@ -1,4 +1,4 @@
-function funcCarousel() {
+export default function funcCarousel() {
     return {
         "type": "carousel",
         "columns": [
@@ -44,4 +44,4 @@ function funcCarousel() {
     }
 }
 
-export { funcCarousel }; 
+// export { funcCarousel }; 

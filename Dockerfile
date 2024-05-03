@@ -1,13 +1,12 @@
-FROM node:17.8-alpine
-
+FROM --platform=linux/amd64 public.ecr.aws/lambda/nodejs:20
 
 WORKDIR /usr/src
 
 COPY package.json .
 COPY package-lock.json .
 
-RUN npm install && npm cache clean --force
+RUN npm install
 
 COPY . .
 
-CMD ["node", "./dist/index.js"]
+CMD ["./dist/index.handler"]    

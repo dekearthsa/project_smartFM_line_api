@@ -1,7 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.flexRegister = void 0;
-const flexRegister = (lineId) => {
+function flexRegister(lineId) {
     // console.log()
     return {
         "type": "bubble",
@@ -42,5 +41,6 @@ const flexRegister = (lineId) => {
             ]
         }
     };
-};
-exports.flexRegister = flexRegister;
+}
+exports.default = flexRegister;
+// export { flexRegister }
