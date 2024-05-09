@@ -29,24 +29,30 @@ const LINE_CLIENT = new bot_sdk_1.Client(CONFIG);
 function controllerLinePush(req, res) {
     return __awaiter(this, void 0, void 0, function* () {
         const { lineID, msg } = req.body;
-        if (lineID) {
-            if (msg) {
-                const echo = { type: "text", altText: "Demo message.", text: msg };
-                LINE_CLIENT.pushMessage(lineID, echo);
-                res.send("ok");
+        try{
+            if (lineID) {
+                if (msg) {
+                    const echo = { type: "text", altText: "Demo message.", text: msg };
+                    LINE_CLIENT.pushMessage(lineID, [echo]);
+                    res.send("ok");
+                }
+                else {
+                    console.log("message undefined");
+                    const echo = { type: "text", altText: "undefined message.", text: "undefined message! format POST {lineID, msg}" };
+                    LINE_CLIENT.pushMessage(lineID, [echo]);
+                    res.send("ok");
+                }
             }
             else {
-                console.log("message undefined");
-                const echo = { type: "text", altText: "undefined message.", text: "undefined message! format POST {lineID, msg}" };
-                LINE_CLIENT.pushMessage(lineID, echo);
-                res.send("ok");
+                console.log("undefined lineID");
+                const echo = { type: "text", altText: "undefined text", text: "undefined message! format POST {lineID, msg}" };
+                res.send(echo);
             }
+        }catch(err){
+            console.log(err);
+            res.status(500).send(string(err))
         }
-        else {
-            console.log("undefined lineID");
-            const echo = { type: "text", altText: "undefined text", text: "undefined message! format POST {lineID, msg}" };
-            res.send(echo);
-        }
+
     });
 }
 exports.default = controllerLinePush;

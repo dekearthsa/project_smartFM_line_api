@@ -25,3 +25,7 @@ app.post("/api/line/push", controllerLinePush)
 
 
 module.exports.handler = serverless(app);
+// const PORT = 2233 
+// app.listen(PORT, () => {
+//     console.log(`service haddle backend listen to port: ${PORT}, http://localhost:${PORT}/api/debug`);
+// });

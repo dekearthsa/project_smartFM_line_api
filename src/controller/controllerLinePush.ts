@@ -21,18 +21,18 @@ export default async function controllerLinePush  (req:any, res:any) {
     const {lineID, msg} = req.body;
     if(lineID){
         if(msg){
-            const echo:any = {type: "text", altText:"Demo message.", text: msg}
+            const echo:any = {type: "text", text: msg}
             LINE_CLIENT.pushMessage(lineID,echo)
             res.send("ok")
         }else{
             console.log("message undefined")
-            const echo:any = {type: "text", altText: "undefined message.", text: "undefined message! format POST {lineID, msg}"}
+            const echo:any = {type: "text", text: "undefined message! format POST {lineID, msg}"}
             LINE_CLIENT.pushMessage(lineID,echo)
             res.send("ok")
         }
     }else{
         console.log("undefined lineID")
-        const echo:any = {type: "text", altText: "undefined text", text: "undefined message! format POST {lineID, msg}"}
+        const echo:any = {type: "text",  text: "undefined message! format POST {lineID, msg}"}
         res.send(echo)
     }
 

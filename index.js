@@ -23,3 +23,7 @@ app.post("/api/register", controllerRegister_1.default);
 app.post("/api/report/other", controllerOtherReport_1.default);
 app.post("/api/line/push", controllerLinePush_1.default);
 module.exports.handler = (0, serverless_http_1.default)(app);
+// const PORT = 2233 
+// app.listen(PORT, () => {
+//     console.log(`service haddle backend listen to port: ${PORT}, http://localhost:${PORT}/api/debug`);
+// });
