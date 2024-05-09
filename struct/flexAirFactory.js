@@ -82,7 +82,7 @@ function flexAirFactory(lineUserID) {
                     "action": {
                         "type": "uri",
                         "label": "4. อื่นๆ",
-                        "uri": `https://demo-service-frontend-register-heim-zt27agut7a-as.a.run.app/report/airfac/${lineUserID}`
+                        "uri": `https://main.d2b5ybccnf0kxx.amplifyapp.com/report/airfac/${lineUserID}`
                     },
                     "color": "#667DD2FF",
                     "style": "primary"

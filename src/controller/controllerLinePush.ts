@@ -17,7 +17,7 @@ const CONFIG = {
 
 const LINE_CLIENT = new line.Client(CONFIG);
 
-const controllerLinePush = async (req:any, res:any) => {
+export default async function controllerLinePush  (req:any, res:any) {
     const {lineID, msg} = req.body;
     if(lineID){
         if(msg){
@@ -38,4 +38,4 @@ const controllerLinePush = async (req:any, res:any) => {
 
 }
 
-export {controllerLinePush}
+// export {controllerLinePush}

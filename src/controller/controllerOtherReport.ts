@@ -6,7 +6,7 @@ const KIND_REPORT = "demo_user_line_report"
 const client = new DynamoDBClient({});
 const docClient = DynamoDBDocumentClient.from(client);
 
-const controllerOtherReport = async (req:any, res:any) => {
+export default async function controllerOtherReport (req:any, res:any) {
     const {lineUserID, systemType ,report, typeReport} = req.body
     const date = new Date();
     const ms = date.getTime();
@@ -58,4 +58,4 @@ const controllerOtherReport = async (req:any, res:any) => {
     
 }
 
-export {controllerOtherReport}
+// export {controllerOtherReport}

@@ -33,7 +33,7 @@ function flexRegister(lineId) {
                     "action": {
                         "type": "uri",
                         "label": "Regsiter",
-                        "uri": `https://demo-service-frontend-register-heim-zt27agut7a-as.a.run.app/reigster/${lineId}`
+                        "uri": `https://main.d2b5ybccnf0kxx.amplifyapp.com/reigster/${lineId}`
                     },
                     "color": "#667DD2FF",
                     "style": "primary"

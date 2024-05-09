@@ -80,7 +80,7 @@ export default function flexSolarRoof (lineUserID: string){
                     "action": {
                         "type": "uri",
                         "label": "4. อื่นๆ",
-                        "uri": `https://demo-service-frontend-register-heim-zt27agut7a-as.a.run.app/report/solar/${lineUserID}`
+                        "uri": `https://main.d2b5ybccnf0kxx.amplifyapp.com/report/solar/${lineUserID}`
                     },
                     "color": "#667DD2FF",
                     "style": "primary"

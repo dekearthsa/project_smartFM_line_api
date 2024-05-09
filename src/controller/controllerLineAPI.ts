@@ -1,4 +1,4 @@
-import  line from "@line/bot-sdk";
+import line from '@line/bot-sdk';
 import { DynamoDBDocumentClient, PutCommand} from "@aws-sdk/lib-dynamodb"; 
 import  { DynamoDBClient, ScanCommand  } from "@aws-sdk/client-dynamodb";
 
@@ -20,9 +20,9 @@ const CONFIG = {
     channelAccessToken: CHANNEL_ACCESS_TOKEN,
     channelSecret: CHANNEL_SECRET
 }
-const LINE_CLIENT = new line.Client(CONFIG)
+const LINE_CLIENT = new line.Client(CONFIG);
 
-const controllerLineAPI = async (req:any , res:any) => {
+export default async function controllerLineAPI  (req:any , res:any) {
     const body = req.body; 
     const MSG_TYPE = body.events[0].message.type;
     const REPLY_TOKEN = req.body.events[0].replyToken;
@@ -61,7 +61,7 @@ const controllerLineAPI = async (req:any , res:any) => {
                     }
                     
                 }else{
-                    const replyPayload:any = {type: "text", text: `คุณยังไม่ได้ลงทะเบียน รบกวนลงทะเบียนก่อนตามเมนูด้านล่าง https://demo-service-frontend-register-heim-zt27agut7a-as.a.run.app/reigster/${USER_ID}`}
+                    const replyPayload:any = {type: "text", text: `คุณยังไม่ได้ลงทะเบียน รบกวนลงทะเบียนก่อนตามเมนูด้านล่าง https://main.d2b5ybccnf0kxx.amplifyapp.com/reigster/${USER_ID}`}
                     return LINE_CLIENT.replyMessage(REPLY_TOKEN, replyPayload)
                 }
             }catch(err){
@@ -280,4 +280,4 @@ const controllerLineAPI = async (req:any , res:any) => {
 
 }
 
-export {controllerLineAPI}
+// export {controllerLineAPI}

@@ -9,7 +9,7 @@ const KIND_COLLECTION = "demo_user_line_id"
 const client = new DynamoDBClient({});
 const docClient = DynamoDBDocumentClient.from(client);
 
-const controllerRegisterLine = async (req:any, res:any) => {
+export default async function controllerRegisterLine (req:any, res:any) {
     const {email, fristName, lastName, tel, userID, getMilisec, product,lineUserID, plantName  } = req.body;
     try{
 
@@ -41,7 +41,7 @@ const controllerRegisterLine = async (req:any, res:any) => {
                 LastName: lastName,
                 Tel: tel,
                 UserID: userID,
-                CreateDate: getMilisec?getMilisec:ms,
+                CreateDate: getMilisec?getMilisec:JSON.stringify(ms),
                 IsProduct:product,
                 LineUserId: lineUserID,
                 PlantName: plantName,
@@ -59,4 +59,4 @@ const controllerRegisterLine = async (req:any, res:any) => {
     }
 }
 
-export {controllerRegisterLine}
+// export {controllerRegisterLine}

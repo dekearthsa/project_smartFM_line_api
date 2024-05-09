@@ -5,7 +5,7 @@ const client = new DynamoDBClient({});
 const docClient = DynamoDBDocumentClient.from(client);
 const KIND_COLLECTION = "demo_user_line_id"
 
-const controllerCreateProfile = async (req:any, res:any) => {
+export default async function  controllerCreateProfile  (req:any, res:any) {
     const {
         email, 
         fristName, 
@@ -45,10 +45,10 @@ const controllerCreateProfile = async (req:any, res:any) => {
                 LastName: lastName,
                 Tel: tel,
                 UserID: userID,
-                createDate: ms,
-                isProduct: isProduct,
-                lineUserId: lineUser,
-                plantName: plantName
+                CreateDate: ms,
+                IsProduct: isProduct,
+                LineUserId: lineUser,
+                PlantName: plantName
             },
         });
 
@@ -68,4 +68,4 @@ const controllerCreateProfile = async (req:any, res:any) => {
 
 }
 
-export {controllerCreateProfile}
+// export {controllerCreateProfile}
